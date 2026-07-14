@@ -50,23 +50,23 @@ const styles = StyleSheet.create({
   panel: {
     backgroundColor: COLORS.panel,
     borderRadius: 24,
-    padding: 12,
-    gap: 12,
+    // The photo bleeds to the panel edges; the panel radius clips its corners.
+    overflow: 'hidden',
   },
   promptPhoto: {
     width: '100%',
     aspectRatio: 3 / 4,
-    borderRadius: 12,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
+    padding: 8,
   },
   badge: {
     width: 32,
     height: 32,
-    borderRadius: 10,
+    borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: COLORS.strokeStrong,
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     color: COLORS.fill,
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '600',
   },
 });
