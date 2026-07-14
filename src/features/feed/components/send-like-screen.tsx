@@ -1,19 +1,30 @@
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { useFeed } from '@/features/feed/api';
+import { SendLikeHero } from '@/features/feed/components/send-like-hero';
 import { CANCEL_LABEL } from '@/features/feed/constants';
 import { COLORS } from '@/utils/colors';
 
-// Send-like modal shell: the hero, message field and CTA stack land in later
-// slices (013-015). The chip already sits where the hero's top-right corner
-// will be, per the approved mockup.
+// Send-like modal: the liked card's hero on top, dismiss chip over its
+// corner. The message field and CTA stack land in issue 015.
 export function SendLikeScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const params = useLocalSearchParams<{ cardId: string; userId: string }>();
+  const { data } = useFeed();
+
+  // Served from the TanStack Query cache: the feed was already fetched by the
+  // screen that pushed this modal.
+  const profile = data?.profiles.find((p) => p.userId === params.userId);
+  const likedCard = profile?.cards.find((c) => c.id === params.cardId);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingTop: insets.top + 4 }]}>
+      {profile && likedCard ? (
+        <SendLikeHero card={likedCard} firstname={profile.firstname} />
+      ) : null}
       <Pressable
         accessibilityLabel={CANCEL_LABEL}
         accessibilityRole="button"
