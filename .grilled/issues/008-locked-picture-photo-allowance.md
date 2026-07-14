@@ -1,6 +1,6 @@
 title: Locked picture card + Photo Allowance rule
 type: AFK
-status: todo
+status: done
 
 ---
 
