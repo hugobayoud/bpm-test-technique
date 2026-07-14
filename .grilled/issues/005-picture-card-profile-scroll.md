@@ -1,6 +1,6 @@
 title: Picture card + vertical profile card list
 type: AFK
-status: todo
+status: done
 
 ---
 
