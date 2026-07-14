@@ -1,6 +1,6 @@
 title: Feed store + like/pass interactions + empty state
 type: AFK
-status: todo
+status: done
 
 ---
 
