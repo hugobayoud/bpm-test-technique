@@ -1,4 +1,4 @@
-import type { RelationshipType } from '@/types/feed';
+import type { RelationshipType, TrainingFrequency } from '@/types/feed';
 
 // All user-facing copy is French. bpm mixes French and franglais on purpose:
 // "Likes", "Matchs", "Boost" and "Rewind" are the app's own terms.
@@ -37,4 +37,22 @@ export const RELATIONSHIP_TYPE_COPY: Record<
   exclusive: { label: 'Endurance', tagline: 'Le jeu long, sans chrono' },
   casual: { label: 'Fractionné', tagline: 'À fond, puis on souffle' },
   intimate: { label: 'Sprint', tagline: 'Intense, sans détour' },
+};
+
+// Sport card list header (rendered uppercase, as in the mockup).
+export const SPORT_CARD_LABEL = 'Séances / semaine';
+
+// Frequency → displayed sessions-per-week value.
+export const TRAINING_FREQUENCY_VALUE: Record<TrainingFrequency, string> = {
+  little: '1-2',
+  mid: '3-4',
+  hard: '5+',
+};
+
+// Frequency → ring sweep, as a fraction of the full circle (user-approved
+// rule: the ring fill is proportional to the training frequency).
+export const TRAINING_FREQUENCY_SWEEP: Record<TrainingFrequency, number> = {
+  little: 1 / 3,
+  mid: 2 / 3,
+  hard: 1,
 };
