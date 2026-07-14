@@ -6,8 +6,6 @@
   // only consumed by useFeed in its own file.
   "ignoreExportsUsedInFile": true,
   "ignoreDependencies": [
-    // Installed at bootstrap, first used by the picture cards (issue 005).
-    "expo-image",
     // The Expo plugin expects it unless updates.enabled is false in app.json;
     // this app is Expo Go-only, OTA updates are out of scope.
     "expo-updates"
