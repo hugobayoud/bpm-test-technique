@@ -1,6 +1,6 @@
 title: Navigation shell — tabs, feed header chrome, placeholder pages
 type: AFK
-status: todo
+status: done
 
 ---
 
