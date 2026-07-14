@@ -1,6 +1,6 @@
 title: Sport card — activity rings + sessions/week list
 type: AFK
-status: todo
+status: done
 
 ---
 
