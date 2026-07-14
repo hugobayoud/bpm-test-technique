@@ -51,6 +51,18 @@ export const LOCKED_PICTURE_COPY = {
   CTA: 'Ajouter mes photos',
 } as const;
 
+// Feed interaction copy. Like/Pass buttons are icon-only: these label them
+// for accessibility. The block & report pill is rendered but inert (user
+// decision: blocking/reporting is out of scope).
+export const LIKE_LABEL = 'Liker';
+export const PASS_LABEL = 'Passer';
+export const BLOCK_REPORT_LABEL = 'Bloquer & Signaler';
+
+// Empty state once every profile got a reaction. The restart button is a demo
+// affordance (user-approved liberty): it replays the same feed from the start.
+export const EMPTY_FEED_MESSAGE = 'Plus de profils pour le moment';
+export const RESTART_LABEL = 'Revoir les profils';
+
 // Sport card list header (rendered uppercase, as in the mockup).
 export const SPORT_CARD_LABEL = 'Séances / semaine';
 
