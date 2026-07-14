@@ -3,6 +3,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Heart } from 'lucide-react-native';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { PromptAnswerBody } from '@/features/feed/components/prompt-answer-body';
+import { SportCardBody } from '@/features/feed/components/sport-card-body';
 import {
   SEND_LIKE_TITLE_PREFIX,
   SUPERLIKES_REMAINING_LABEL,
@@ -16,13 +18,13 @@ export type SendLikeHeroProps = {
   firstname: string;
 };
 
-// Uniform hero frame: the liked card fills it (photos full-bleed here;
-// prompt/sport content arrives with issue 014), the superlike scrim rises
-// from the bottom and the title block overlays it.
-export function SendLikeHero({ card, firstname }: SendLikeHeroProps) {
-  return (
-    <View style={styles.frame}>
-      {card.type === 'picture' ? (
+// The liked card's content inside the uniform frame. Photos bleed to the
+// edges; text cards (prompt answer, sport) reuse the feed cards' bodies —
+// same internals, no like button — top-aligned on the frame's panel bg.
+function renderCardContent(card: ProfileCard) {
+  switch (card.type) {
+    case 'picture':
+      return (
         <Image
           contentFit="cover"
           placeholder={{ thumbhash: card.content.thumbhash }}
@@ -31,7 +33,33 @@ export function SendLikeHero({ card, firstname }: SendLikeHeroProps) {
           style={styles.photo}
           transition={300}
         />
-      ) : null}
+      );
+    case 'prompt_answer':
+      return (
+        <View style={styles.textContent}>
+          <PromptAnswerBody content={card.content} />
+        </View>
+      );
+    case 'sport_card':
+      return (
+        <View style={styles.textContent}>
+          <SportCardBody content={card.content} />
+        </View>
+      );
+    default:
+      // Info and locked-picture cards are not Likable: unreachable via the
+      // feed's like buttons, so the frame just stays empty.
+      return null;
+  }
+}
+
+// Uniform hero frame: the liked card fills it, the superlike scrim rises
+// from the bottom and the title block overlays it — identical composition
+// for every likable card kind.
+export function SendLikeHero({ card, firstname }: SendLikeHeroProps) {
+  return (
+    <View style={styles.frame}>
+      {renderCardContent(card)}
       <LinearGradient
         colors={[
           COLORS.superlikeTransparent,
@@ -68,6 +96,12 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+  },
+  textContent: {
+    // Top inset clears the "annuler" chip zone (chip bottom within the
+    // hero ≈ 56) so card text never collides with it.
+    paddingTop: 76,
+    paddingHorizontal: 20,
   },
   scrim: {
     position: 'absolute',

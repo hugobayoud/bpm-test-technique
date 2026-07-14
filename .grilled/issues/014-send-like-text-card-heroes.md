@@ -1,6 +1,6 @@
 title: Send-like modal — text-card heroes in the uniform frame
 type: AFK
-status: todo
+status: done
 
 ---
 
