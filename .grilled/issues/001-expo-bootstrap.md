@@ -1,6 +1,6 @@
 title: Expo SDK 57 bootstrap — tree, tokens, fonts, conventions
 type: AFK
-status: todo
+status: done
 
 ---
 
