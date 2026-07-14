@@ -1,7 +1,7 @@
 import { Image } from 'expo-image';
-import { Quote } from 'lucide-react-native';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
+import { PromptHeader } from '@/features/feed/components/prompt-header';
 import type { PictureContent } from '@/types/feed';
 import { COLORS } from '@/utils/colors';
 
@@ -10,7 +10,8 @@ export type PictureCardProps = {
 };
 
 export function PictureCard({ content }: PictureCardProps) {
-  const answersPrompt = content.promptTitle !== null;
+  const { promptTitle } = content;
+  const answersPrompt = promptTitle !== null;
 
   const photo = (
     <Image
@@ -29,13 +30,7 @@ export function PictureCard({ content }: PictureCardProps) {
 
   return (
     <View style={styles.panel}>
-      <View style={styles.header}>
-        {/* Lucide Quote filled white: substitution for bpm's "99" quote glyph (no asset). */}
-        <View style={styles.badge}>
-          <Quote color={COLORS.fill} fill={COLORS.fill} size={14} />
-        </View>
-        <Text style={styles.title}>{content.promptTitle}</Text>
-      </View>
+      <PromptHeader title={promptTitle} />
       {photo}
     </View>
   );
@@ -56,25 +51,5 @@ const styles = StyleSheet.create({
   promptPhoto: {
     width: '100%',
     aspectRatio: 3 / 4,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    padding: 8,
-  },
-  badge: {
-    width: 32,
-    height: 32,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: COLORS.strokeStrong,
-  },
-  title: {
-    flex: 1,
-    color: COLORS.fill,
-    fontSize: 16,
-    fontWeight: '600',
   },
 });
