@@ -1,0 +1,12 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  // Provided feed contract, byte-identical and untouched; consumed from issue 004 on.
+  "ignore": ["src/types/feed.ts"],
+  "ignoreDependencies": [
+    // Installed at bootstrap, first used by the picture cards (issue 005).
+    "expo-image",
+    // The Expo plugin expects it unless updates.enabled is false in app.json;
+    // this app is Expo Go-only, OTA updates are out of scope.
+    "expo-updates"
+  ]
+}
