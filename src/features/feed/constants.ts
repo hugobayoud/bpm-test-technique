@@ -39,6 +39,18 @@ export const RELATIONSHIP_TYPE_COPY: Record<
   intimate: { label: 'Sprint', tagline: 'Intense, sans détour' },
 };
 
+// Photo Allowance input: how many photos the viewer has uploaded. Static by
+// design — the viewer's own profile is not modeled. With the fixture (max 2
+// pictures per profile) 3 never demotes; lower to 1 to see demotion live.
+export const VIEWER_UPLOADED_PHOTOS_COUNT = 3;
+
+// Locked picture card copy. The CTA is inert: adding photos is out of scope.
+export const LOCKED_PICTURE_COPY = {
+  TITLE: 'Tu vois autant de photos que tu en partages.',
+  SUBTITLE: 'Débloque plus de photos en ajoutant les tiennes.',
+  CTA: 'Ajouter mes photos',
+} as const;
+
 // Sport card list header (rendered uppercase, as in the mockup).
 export const SPORT_CARD_LABEL = 'Séances / semaine';
 
