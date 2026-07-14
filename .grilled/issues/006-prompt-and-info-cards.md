@@ -1,6 +1,6 @@
 title: Prompt answer card + info card
 type: AFK
-status: todo
+status: done
 
 ---
 

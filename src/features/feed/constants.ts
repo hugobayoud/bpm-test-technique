@@ -1,3 +1,5 @@
+import type { RelationshipType } from '@/types/feed';
+
 // All user-facing copy is French. bpm mixes French and franglais on purpose:
 // "Likes", "Matchs", "Boost" and "Rewind" are the app's own terms.
 export const TAB_LABELS = {
@@ -23,3 +25,16 @@ export const BOOST_BADGE = '1';
 
 // Minimal error state: shown when the feed can't load (or comes back empty).
 export const FEED_ERROR_MESSAGE = 'Impossible de charger les profils.';
+
+export const HEIGHT_UNIT = 'cm';
+
+// Info card "looking for" copy. "Endurance" is the real app's wording for
+// exclusive; the casual/intimate running metaphors are invented (README liberty).
+export const RELATIONSHIP_TYPE_COPY: Record<
+  RelationshipType,
+  { label: string; tagline: string }
+> = {
+  exclusive: { label: 'Endurance', tagline: 'Le jeu long, sans chrono' },
+  casual: { label: 'Fractionné', tagline: 'À fond, puis on souffle' },
+  intimate: { label: 'Sprint', tagline: 'Intense, sans détour' },
+};
