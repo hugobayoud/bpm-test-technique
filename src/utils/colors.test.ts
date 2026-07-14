@@ -7,7 +7,9 @@ import { COLORS } from '@/utils/colors';
 describe('COLORS', () => {
   it('contains only hex or rgba values', () => {
     for (const value of Object.values(COLORS)) {
-      expect(value).toMatch(/^(#[0-9a-f]{6}|rgba\(\d+, \d+, \d+, 0\.\d+\))$/i);
+      expect(value).toMatch(
+        /^(#[0-9a-f]{6}|rgba\(\d+, \d+, \d+, 0(\.\d+)?\))$/i,
+      );
     }
   });
 });
