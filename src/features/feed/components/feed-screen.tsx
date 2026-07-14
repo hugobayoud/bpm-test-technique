@@ -5,6 +5,7 @@ import { useFeed } from '@/features/feed/api';
 import { FEED_ERROR_MESSAGE } from '@/features/feed/constants';
 import { COLORS } from '@/utils/colors';
 import { FeedHeader } from './feed-header';
+import { ProfileCardList } from './profile-card-list';
 
 export function FeedScreen() {
   const insets = useSafeAreaInsets();
@@ -36,6 +37,7 @@ export function FeedScreen() {
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <FeedHeader firstname={currentProfile.firstname} />
+      <ProfileCardList cards={currentProfile.cards} />
     </View>
   );
 }
