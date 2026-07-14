@@ -2,3 +2,19 @@ node_modules/
 .expo/
 dist/
 .DS_Store
+
+# Expo generated
+web-build/
+expo-env.d.ts
+.metro-health-check*
+*.tsbuildinfo
+/ios
+/android
+
+# local env files
+.env*.local
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
