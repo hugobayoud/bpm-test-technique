@@ -2,6 +2,9 @@
   "$schema": "https://unpkg.com/knip@6/schema.json",
   // Provided feed contract, byte-identical and untouched; consumed from issue 004 on.
   "ignore": ["src/types/feed.ts"],
+  // feedKeys is exported as the future invalidation seam but is currently
+  // only consumed by useFeed in its own file.
+  "ignoreExportsUsedInFile": true,
   "ignoreDependencies": [
     // Installed at bootstrap, first used by the picture cards (issue 005).
     "expo-image",

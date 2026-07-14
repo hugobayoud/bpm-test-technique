@@ -21,5 +21,5 @@ export const BACK_LABEL = 'Retour';
 export const LIKES_TAB_BADGE = '4';
 export const BOOST_BADGE = '1';
 
-// Static stand-in until the data layer lands (issue 004).
-export const FEED_STUB_FIRSTNAME = 'Camille';
+// Minimal error state: shown when the feed can't load (or comes back empty).
+export const FEED_ERROR_MESSAGE = 'Impossible de charger les profils.';
