@@ -29,6 +29,7 @@ Guards: all reaction inputs (hearts, X) **disabled while the sequence runs** —
 - [ ] Double-tapping heart/X during the sequence advances exactly one profile
 - [ ] Last profile's reaction fades out onto the empty state
 - [ ] Timings (200ms / 1000ms / 250ms) live as constants; `npm run check` green
+- [ ] Folder `docs` is empty as `brief.md` and `feed-response-example.json` are deleted
 
 ## Blocked by
 
