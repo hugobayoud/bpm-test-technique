@@ -70,6 +70,8 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     // The visual bleeds to the panel edges; the panel radius clips its corners.
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: COLORS.strokeDefault,
   },
   visual: {
     width: '100%',

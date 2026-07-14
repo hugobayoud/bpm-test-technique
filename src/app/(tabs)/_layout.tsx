@@ -24,7 +24,7 @@ export default function TabsLayout() {
         options={{
           title: TAB_LABELS.HOME,
           tabBarIcon: ({ color, size }) => (
-            <BpmLogo width={size * 0.95} height={size} color={color} />
+            <BpmLogo width={size * 0.95} height={size * 0.95} color={color} />
           ),
         }}
       />

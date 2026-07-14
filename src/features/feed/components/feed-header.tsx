@@ -42,7 +42,11 @@ export function FeedHeader({ firstname }: FeedHeaderProps) {
           onPress={() => router.push('/boost')}
           style={styles.boostButton}
         >
-          <Zap color={COLORS.fill} fill={COLORS.fill} size={18} />
+          <Zap
+            color={COLORS.fillOpposite}
+            fill={COLORS.fillOpposite}
+            size={14}
+          />
           <View style={styles.boostBadge}>
             <Text style={styles.boostBadgeText}>{BOOST_BADGE}</Text>
           </View>
@@ -57,8 +61,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
   },
   title: {
     color: COLORS.fill,
@@ -73,15 +77,15 @@ const styles = StyleSheet.create({
   pill: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 40,
+    height: 36,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: COLORS.strokeDefault,
-    backgroundColor: COLORS.panel,
+    // borderColor: COLORS.strokeDefault,
+    backgroundColor: COLORS.strokeStrong,
   },
   pillButton: {
     height: '100%',
-    paddingHorizontal: 14,
+    paddingHorizontal: 12,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -91,8 +95,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.strokeStrong,
   },
   boostButton: {
-    width: 40,
-    height: 40,
+    width: 32,
+    height: 32,
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',

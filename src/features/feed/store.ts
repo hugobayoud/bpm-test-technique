@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 // Transient reaction: set by likeCard/passProfile, cleared by advance. The
-// overlay issue (010) will animate it between those two moments.
+// reaction overlay animates it between those two moments.
 export type FeedReaction = 'like' | 'pass';
 
 type FeedStore = {
@@ -26,16 +26,26 @@ const INITIAL_STATE = {
 // in TanStack Query. In-memory by design: no persistence.
 export const useFeedStore = create<FeedStore>()((set) => ({
   ...INITIAL_STATE,
+  // Both reactions are no-ops while one is already pending: a rapid
+  // double-tap must record and advance exactly one profile.
   likeCard: (cardId) =>
-    set((state) => ({
-      likedCardIds: [...state.likedCardIds, cardId],
-      reaction: 'like',
-    })),
+    set((state) =>
+      state.reaction
+        ? state
+        : {
+            likedCardIds: [...state.likedCardIds, cardId],
+            reaction: 'like',
+          },
+    ),
   passProfile: (profileId) =>
-    set((state) => ({
-      passedProfileIds: [...state.passedProfileIds, profileId],
-      reaction: 'pass',
-    })),
+    set((state) =>
+      state.reaction
+        ? state
+        : {
+            passedProfileIds: [...state.passedProfileIds, profileId],
+            reaction: 'pass',
+          },
+    ),
   advance: () =>
     set((state) => ({
       currentProfileIndex: state.currentProfileIndex + 1,

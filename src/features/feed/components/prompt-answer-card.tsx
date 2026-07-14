@@ -1,16 +1,18 @@
 import { Quote } from 'lucide-react-native';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { LikeButton } from '@/features/feed/components/like-button';
 import type { PromptAnswerContent } from '@/types/feed';
 import { COLORS } from '@/utils/colors';
 import { TITLE_FONT_FAMILY } from '@/utils/fonts';
 
 export type PromptAnswerCardProps = {
   content: PromptAnswerContent;
+  onLike: () => void;
 };
 
 // content.category (lifestyle/sport) is deliberately not rendered (README note).
-export function PromptAnswerCard({ content }: PromptAnswerCardProps) {
+export function PromptAnswerCard({ content, onLike }: PromptAnswerCardProps) {
   return (
     <View style={styles.panel}>
       <View style={styles.header}>
@@ -22,18 +24,26 @@ export function PromptAnswerCard({ content }: PromptAnswerCardProps) {
         <Text style={styles.title}>{content.promptTitle}</Text>
       </View>
       <Text style={styles.answer}>{content.answerText}</Text>
+      <View style={styles.likeRow}>
+        <LikeButton onPress={onLike} overlay={false} />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   panel: {
+    borderWidth: StyleSheet.hairlineWidth * 2,
+    borderColor: COLORS.strokeDefault,
     backgroundColor: COLORS.panel,
     borderRadius: 24,
     padding: 20,
     paddingTop: 24,
-    paddingBottom: 32,
+    paddingBottom: 20,
     gap: 20,
+  },
+  likeRow: {
+    alignItems: 'flex-end',
   },
   header: {
     flexDirection: 'row',
@@ -51,15 +61,13 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     color: COLORS.textMuted,
-    fontSize: 13,
+    fontSize: 11,
     fontWeight: '600',
-    letterSpacing: 1,
     textTransform: 'uppercase',
   },
   answer: {
     color: COLORS.fill,
     fontFamily: TITLE_FONT_FAMILY,
-    fontSize: 26,
-    lineHeight: 30,
+    fontSize: 23,
   },
 });
