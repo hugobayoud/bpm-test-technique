@@ -10,6 +10,7 @@
     "includes": [
       "**",
       "!src/types/feed.ts",
+      "!src/features/feed/fixtures",
       "!src/assets",
       "!docs",
       "!assets",

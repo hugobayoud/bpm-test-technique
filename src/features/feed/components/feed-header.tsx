@@ -2,20 +2,20 @@ import { useRouter } from 'expo-router';
 import { RotateCcw, SlidersHorizontal, Zap } from 'lucide-react-native';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import {
-  BOOST_BADGE,
-  FEED_STUB_FIRSTNAME,
-  HEADER_ACTION_TITLES,
-} from '@/features/feed/constants';
+import { BOOST_BADGE, HEADER_ACTION_TITLES } from '@/features/feed/constants';
 import { COLORS } from '@/utils/colors';
 import { TITLE_FONT_FAMILY } from '@/utils/fonts';
 
-export function FeedHeader() {
+export type FeedHeaderProps = {
+  firstname: string;
+};
+
+export function FeedHeader({ firstname }: FeedHeaderProps) {
   const router = useRouter();
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{FEED_STUB_FIRSTNAME}</Text>
+      <Text style={styles.title}>{firstname}</Text>
       <View style={styles.actions}>
         <View style={styles.pill}>
           <Pressable
