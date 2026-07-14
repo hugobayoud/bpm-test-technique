@@ -1,6 +1,6 @@
 title: Tooling — knip, biome, typecheck, vitest
 type: AFK
-status: todo
+status: done
 
 ---
 
