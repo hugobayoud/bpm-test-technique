@@ -1,6 +1,6 @@
 title: Reaction overlay — the like & pass animations
 type: AFK
-status: todo
+status: done
 
 ---
 

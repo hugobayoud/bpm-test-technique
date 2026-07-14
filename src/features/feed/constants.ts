@@ -58,6 +58,12 @@ export const LIKE_LABEL = 'Liker';
 export const PASS_LABEL = 'Passer';
 export const BLOCK_REPORT_LABEL = 'Bloquer & Signaler';
 
+// Reaction overlay sequence: opaque fade-in, hold with the popping icon while
+// the profile swap happens invisibly underneath, fade-out onto the next one.
+export const REACTION_FADE_IN_MS = 200;
+export const REACTION_HOLD_MS = 1000;
+export const REACTION_FADE_OUT_MS = 250;
+
 // Empty state once every profile got a reaction. The restart button is a demo
 // affordance (user-approved liberty): it replays the same feed from the start.
 export const EMPTY_FEED_MESSAGE = 'Plus de profils pour le moment';
