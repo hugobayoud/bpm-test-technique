@@ -1,3 +1,4 @@
+import { QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -5,6 +6,7 @@ import { StatusBar } from 'expo-status-bar';
 import * as SystemUI from 'expo-system-ui';
 import { useEffect } from 'react';
 
+import { queryClient } from '@/lib/query-client';
 import { COLORS } from '@/utils/colors';
 import { TITLE_FONT_FAMILY } from '@/utils/fonts';
 
@@ -27,7 +29,7 @@ export default function RootLayout() {
   }
 
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <StatusBar style="light" />
       <Stack
         screenOptions={{
@@ -35,6 +37,6 @@ export default function RootLayout() {
           contentStyle: { backgroundColor: COLORS.surface },
         }}
       />
-    </>
+    </QueryClientProvider>
   );
 }
