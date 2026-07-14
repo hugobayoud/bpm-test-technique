@@ -58,6 +58,9 @@ export const LIKE_LABEL = 'Liker';
 export const PASS_LABEL = 'Passer';
 export const BLOCK_REPORT_LABEL = 'Bloquer & Signaler';
 
+// Send-like modal dismiss chip ("annuler" is lowercase in the mockup).
+export const CANCEL_LABEL = 'annuler';
+
 // Reaction overlay sequence: opaque fade-in, hold with the popping icon while
 // the profile swap happens invisibly underneath, fade-out onto the next one.
 export const REACTION_FADE_IN_MS = 200;

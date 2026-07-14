@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -12,13 +13,13 @@ import { FeedHeader } from './feed-header';
 import { ProfileCardList } from './profile-card-list';
 
 export function FeedScreen() {
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   const { data, isPending } = useFeed();
   const currentProfileIndex = useFeedStore(
     (state) => state.currentProfileIndex,
   );
   const reaction = useFeedStore((state) => state.reaction);
-  const likeCard = useFeedStore((state) => state.likeCard);
   const passProfile = useFeedStore((state) => state.passProfile);
   const advance = useFeedStore((state) => state.advance);
   const restart = useFeedStore((state) => state.restart);
@@ -48,10 +49,17 @@ export function FeedScreen() {
         <>
           <FeedHeader firstname={currentProfile.firstname} />
           {/* Keyed remount on profile change resets the scroll to the top. */}
+          {/* Liking opens the send-like modal; the store records the like
+              only when it is confirmed there (issue 015). */}
           <ProfileCardList
             cards={currentProfile.cards}
             key={currentProfile.userId}
-            onLikeCard={likeCard}
+            onLikeCard={(cardId) =>
+              router.push({
+                pathname: '/send-like',
+                params: { cardId, userId: currentProfile.userId },
+              })
+            }
           />
           <PassButton onPress={() => passProfile(currentProfile.userId)} />
         </>

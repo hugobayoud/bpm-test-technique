@@ -36,7 +36,17 @@ export default function RootLayout() {
           headerShown: false,
           contentStyle: { backgroundColor: COLORS.surface },
         }}
-      />
+      >
+        {/* Full-screen modal over the tabs: no tab bar, slide from bottom
+            (docs/ui-conventions.md, "Overlays & modals"). */}
+        <Stack.Screen
+          name="send-like"
+          options={{
+            animation: 'slide_from_bottom',
+            presentation: 'fullScreenModal',
+          }}
+        />
+      </Stack>
     </QueryClientProvider>
   );
 }
