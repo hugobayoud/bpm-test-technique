@@ -1,6 +1,6 @@
 title: README + final polish pass
 type: AFK
-status: todo
+status: done
 
 ---
 
@@ -37,6 +37,7 @@ The closing slice: reviewer-facing documentation and a final coherence pass.
 - [ ] `npm run check` green from a clean clone (`npm ci`)
 - [ ] `git diff` clean on `src/types/feed.ts` vs baseline
 - [ ] All 10 fixture profiles browsed on-device without visual breakage
+- [ ] Make this readme.md the simplest and shortest possible to enhance human readiness
 
 ## Blocked by
 
