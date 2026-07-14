@@ -30,7 +30,13 @@ function isLikable(card: ProfileCard, locked: boolean): boolean {
   );
 }
 
-function renderCard(card: ProfileCard, locked: boolean) {
+// Text cards (sport, prompt answer) render the like button inside their own
+// panel, so the list only overlays a button on the remaining Likable Cards.
+function hasInternalLike(card: ProfileCard): boolean {
+  return card.type === 'prompt_answer' || card.type === 'sport_card';
+}
+
+function renderCard(card: ProfileCard, locked: boolean, onLike: () => void) {
   switch (card.type) {
     case 'picture':
       return locked ? (
@@ -43,9 +49,9 @@ function renderCard(card: ProfileCard, locked: boolean) {
         <PictureCard content={card.content} />
       );
     case 'prompt_answer':
-      return <PromptAnswerCard content={card.content} />;
+      return <PromptAnswerCard content={card.content} onLike={onLike} />;
     case 'sport_card':
-      return <SportCard content={card.content} />;
+      return <SportCard content={card.content} onLike={onLike} />;
     case 'info_card':
       return <InfoCard content={card.content} />;
     case 'locked_picture':
@@ -76,8 +82,8 @@ export function ProfileCardList({ cards, onLikeCard }: ProfileCardListProps) {
     >
       {allowedCards.map(({ card, locked }) => (
         <View key={card.id}>
-          {renderCard(card, locked)}
-          {isLikable(card, locked) ? (
+          {renderCard(card, locked, () => onLikeCard(card.id))}
+          {isLikable(card, locked) && !hasInternalLike(card) ? (
             <LikeButton onPress={() => onLikeCard(card.id)} />
           ) : null}
         </View>
@@ -92,7 +98,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 14,
     paddingTop: 8,
     // Room for the end of the scroll to clear the sticky pass button.
     paddingBottom: 96,

@@ -60,6 +60,30 @@ describe('useFeedStore', () => {
     expect(state.passedProfileIds).toEqual(['profile-2']);
   });
 
+  it('ignores reactions while one is already pending (double-tap guard)', () => {
+    useFeedStore.getState().likeCard('card-1');
+    useFeedStore.getState().likeCard('card-1');
+    useFeedStore.getState().passProfile('profile-1');
+
+    const state = useFeedStore.getState();
+    expect(state.likedCardIds).toEqual(['card-1']);
+    expect(state.passedProfileIds).toEqual([]);
+    expect(state.reaction).toBe('like');
+  });
+
+  it('accepts a new reaction again once advance cleared the pending one', () => {
+    useFeedStore.getState().passProfile('profile-1');
+    useFeedStore.getState().passProfile('profile-1');
+    useFeedStore.getState().advance();
+    useFeedStore.getState().likeCard('card-2');
+
+    const state = useFeedStore.getState();
+    expect(state.currentProfileIndex).toBe(1);
+    expect(state.passedProfileIds).toEqual(['profile-1']);
+    expect(state.likedCardIds).toEqual(['card-2']);
+    expect(state.reaction).toBe('like');
+  });
+
   it('restart resets everything back to the first profile', () => {
     useFeedStore.getState().likeCard('card-1');
     useFeedStore.getState().advance();

@@ -6,32 +6,40 @@ import { COLORS } from '@/utils/colors';
 
 export type LikeButtonProps = {
   onPress: () => void;
+  // Overlay (default): absolutely pinned to the parent's bottom-right corner
+  // (picture cards). Otherwise the button sits in normal flow and the parent
+  // card positions it (text cards place it inside the panel, bottom-right).
+  overlay?: boolean;
 };
 
-// Overlays the bottom-right corner of its parent card (Likable Cards only).
-export function LikeButton({ onPress }: LikeButtonProps) {
+export function LikeButton({ onPress, overlay = true }: LikeButtonProps) {
   return (
     <Pressable
       accessibilityLabel={LIKE_LABEL}
       accessibilityRole="button"
       onPress={onPress}
-      style={styles.button}
+      style={overlay ? styles.overlayButton : styles.button}
     >
       <Heart color={COLORS.fillOpposite} size={22} />
     </Pressable>
   );
 }
 
+const baseButton = {
+  width: 48,
+  height: 48,
+  borderRadius: 24,
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: COLORS.fill,
+} as const;
+
 const styles = StyleSheet.create({
-  button: {
+  button: baseButton,
+  overlayButton: {
+    ...baseButton,
     position: 'absolute',
     bottom: 14,
     right: 14,
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: COLORS.fill,
   },
 });

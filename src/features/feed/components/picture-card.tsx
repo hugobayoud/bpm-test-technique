@@ -47,6 +47,8 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     // The photo bleeds to the panel edges; the panel radius clips its corners.
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: COLORS.strokeDefault,
   },
   promptPhoto: {
     width: '100%',

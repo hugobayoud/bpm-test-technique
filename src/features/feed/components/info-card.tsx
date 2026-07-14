@@ -50,6 +50,8 @@ export function InfoCard({ content }: InfoCardProps) {
 
 const styles = StyleSheet.create({
   panel: {
+    borderWidth: StyleSheet.hairlineWidth * 2,
+    borderColor: COLORS.strokeDefault,
     backgroundColor: COLORS.panel,
     borderRadius: 24,
     padding: 20,
