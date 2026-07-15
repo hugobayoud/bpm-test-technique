@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "bpm",
-    "slug": "bpm",
+    "name": "bpm-test-technique",
+    "slug": "bpm-test-technique",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "bpm",
+    "scheme": "bpm-test-technique",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#0D0D0D",
     "ios": {
@@ -18,7 +18,8 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.hugobayoud.bpmtesttechnique"
     },
     "web": {
       "output": "static",
@@ -40,14 +41,14 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "28dbc4b0-6053-4443-89e9-93a430c28809"
+        "projectId": "bd8e42bc-b34d-4175-901c-1f06d8fad53c"
       }
     },
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/28dbc4b0-6053-4443-89e9-93a430c28809"
+      "url": "https://u.expo.dev/bd8e42bc-b34d-4175-901c-1f06d8fad53c"
     }
   }
 }

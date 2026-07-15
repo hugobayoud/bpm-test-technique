@@ -6,22 +6,26 @@ Recréation du feed bpm : les profils défilent verticalement carte par carte, o
 
 ## Tester l'app
 
-Le plus simple : installer [Expo Go](https://expo.dev/go) (iOS / Android), scanner ce QR code. Rien d'autre à faire.
+Expo Go ne supporte plus le SDK 57, l'app se teste donc en build standalone.
 
-<img src="docs/readme/qr-expo.jpeg" width="220" alt="QR code Expo Go">
+**Android — le plus simple.** Scanner ce QR code, installer l'APK (Android demande une confirmation, normal hors Play Store), c'est tout :
 
-Lien direct : [ouvrir dans Expo Go](LIEN_EAS_UPDATE_A_COLLER)
+<img src="docs/readme/qr-expo.jpeg" width="220" alt="QR code d'installation de l'APK Android">
 
-Pas de backend : les données viennent d'une fixture locale servie avec ~500 ms de délai simulé — c'est voulu, conforme au brief.
+Lien direct : [installer l'APK](LIEN_INSTALL_APK_A_COLLER)
 
-Pour lancer depuis les sources :
+Le build embarque EAS Update : si je corrige quelque chose, l'app installée récupère la mise à jour au relancement, sans réinstaller.
+
+**iOS.** Pas de build partageable sans compte Apple Developer — sur Mac, le simulateur fait très bien l'affaire :
 
 ```bash
 npm install
 npx expo start
 ```
 
-Puis scanner le QR affiché, toujours avec Expo Go (SDK 57, aucun code natif custom). Les checks : `npm run check` (biome + typecheck + vitest + knip).
+Puis touche `i` (simulateur iOS) ou `a` (émulateur Android) : Expo y installe tout seul la version d'Expo Go compatible SDK 57. Le projet est 100 % managed, aucun code natif custom.
+
+Pas de backend : les données viennent d'une fixture locale servie avec ~500 ms de délai simulé — c'est voulu, conforme au brief. Les checks : `npm run check` (biome + typecheck + vitest + knip).
 
 ## Stack
 
@@ -39,6 +43,8 @@ Point de départ : le brief, le JSON d'exemple, et le screen que tu m'as laissé
 
 Tout est fait avec Claude Code (Fable 5) et mes skills perso, en une grosse après-midi de travail. Mon workflow en trois temps :
 
+(note: pas facile de partager une conversation avec Claude Desktop, j'ai du tout convertir en html donc tu risque de devoir les téléchargers pour visionner les conversations)
+
 1. **Grilling** — l'IA m'interviewe (~20 questions, une par une) et toutes les décisions sont figées avant de coder. [Voir la conversation](LIEN_GRILLING_A_COLLER)
 2. **to-issues** — le plan est découpé en 11 issues, des tranches verticales livrables dans l'ordre. Elles sont dans [.grilled/issues/](.grilled/issues/) — je les laisse volontairement dans le repo pour que vous puissiez les lire.
 3. **implement-next-issue** — une issue = une conversation fraîche = une PR mergée dans `main`, avec `npm run check` à chaque fois. [Voir un exemple](LIEN_IMPLEMENT_A_COLLER)
@@ -53,16 +59,16 @@ La page d'envoi de like est arrivée dans un second temps. J'ai d'abord dessiné
 
 ### 1. La carte « photos verrouillées »
 
-| Original bpm | Ma version |
-|---|---|
+| Original bpm                                                                                       | Ma version                                                                                           |
+| -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
 | <img src="docs/readme/locked-picture-original.jpeg" width="230" alt="Carte verrouillée originale"> | <img src="docs/readme/locked-picture-proposal.jpeg" width="230" alt="Carte verrouillée, ma version"> |
 
-Le message original m'a vraiment fait hésiter : « Tu n'as pas assez de photos » en plein milieu du profil de quelqu'un d'autre, avec un bouton pour ajouter *mes* photos. La règle est bonne — on voit autant de photos qu'on en partage — mais le wording la cache. Je l'ai reformulée pour l'expliquer : « Tu vois autant de photos que tu en partages. »
+Le message original m'a vraiment fait hésiter : « Tu n'as pas assez de photos » en plein milieu du profil de quelqu'un d'autre, avec un bouton pour ajouter _mes_ photos. La règle est bonne — on voit autant de photos qu'on en partage — mais le wording la cache. Je l'ai reformulée pour l'expliquer : « Tu vois autant de photos que tu en partages. »
 
 ### 2. La page d'envoi de like
 
-| Original bpm | Superlikes restants | Plus de superlikes |
-|---|---|---|
+| Original bpm                                                                               | Superlikes restants                                                                                                      | Plus de superlikes                                                                                                    |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
 | <img src="docs/readme/envoie-like-original.jpeg" width="230" alt="Envoi de like original"> | <img src="docs/readme/envoie-like-proposal-superlikes-remaining.jpeg" width="230" alt="Ma version, superlikes restants"> | <img src="docs/readme/envoie-like-proposal-no-superlikes-left.jpeg" width="230" alt="Ma version, plus de superlikes"> |
 
 La page originale me semble perfectible, j'ai donc proposé autre chose. Deux états pensés dès le mockup : s'il reste des superlikes, le CTA Superlike est mis en avant ; sinon, la page devient un point d'entrée pour en obtenir. Un champ de message personnalisé accompagne le like dans les deux cas.
