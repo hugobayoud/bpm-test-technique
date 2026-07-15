@@ -70,6 +70,13 @@ export const SUPERLIKES_REMAINING = 0;
 export const SEND_LIKE_TITLE_PREFIX = 'Envoyer un like à';
 export const SUPERLIKES_REMAINING_LABEL = `Il vous reste ${SUPERLIKES_REMAINING} Superlikes`;
 
+// Send-like modal lower half. The message is local state only, discarded on
+// send and cancel (README liberty: no fake mutation, api.ts stays the seam).
+// "Obtenir Superlike" is rendered but inert (0-Superlikes scope, no paywall).
+export const MESSAGE_PLACEHOLDER = 'Un petit message personnalisé (optionnel)';
+export const GET_SUPERLIKE_LABEL = 'Obtenir Superlike';
+export const SEND_LIKE_LABEL = 'Envoyer Like';
+
 // Reaction overlay sequence: opaque fade-in, hold with the popping icon while
 // the profile swap happens invisibly underneath, fade-out onto the next one.
 export const REACTION_FADE_IN_MS = 200;
