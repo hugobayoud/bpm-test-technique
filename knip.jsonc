@@ -4,10 +4,5 @@
   "ignore": ["src/types/feed.ts"],
   // feedKeys is exported as the future invalidation seam but is currently
   // only consumed by useFeed in its own file.
-  "ignoreExportsUsedInFile": true,
-  "ignoreDependencies": [
-    // The Expo plugin expects it unless updates.enabled is false in app.json;
-    // this app is Expo Go-only, OTA updates are out of scope.
-    "expo-updates"
-  ]
+  "ignoreExportsUsedInFile": true
 }

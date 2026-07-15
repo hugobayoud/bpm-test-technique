@@ -1,100 +1,91 @@
-# bpm feed — test technique
+# bpm feed - test technique
 
-Recréation du feed bpm : les profils défilent verticalement carte par carte, on like une carte précise ou on passe le profil entier, et le feed avance.
-
-<img src="docs/readme/feed.jpeg" width="260" alt="Aperçu du feed">
+Recréation du feed bpm : les profils défilent verticalement card par card, on peut liker une card précise ou on passe le profil entier, et le feed avance. (data en local)
 
 ## Tester l'app
 
 Expo Go ne supporte plus le SDK 57, l'app se teste donc en build standalone.
 
-**Android — le plus simple.** Scanner ce QR code, installer l'APK (Android demande une confirmation, normal hors Play Store), c'est tout :
-
-<img src="docs/readme/qr-expo.jpeg" width="220" alt="QR code d'installation de l'APK Android">
+**Android** Scanner ce QR code, installer l'APK (Android demande une confirmation, normal hors Play Store), c'est tout :
 
 Lien direct : [installer l'APK](LIEN_INSTALL_APK_A_COLLER)
 
-Le build embarque EAS Update : si je corrige quelque chose, l'app installée récupère la mise à jour au relancement, sans réinstaller.
+Le build utilise notamment EAS Update si je fais une mise a jour.
 
-**iOS.** Pas de build partageable sans compte Apple Developer — sur Mac, le simulateur fait très bien l'affaire :
+**iOS.** Pas de build partageable sans compte Apple Developer. Mais sur Mac, le simulateur fait très bien l'affaire :
 
 ```bash
 npm install
 npx expo start
 ```
 
-Puis touche `i` (simulateur iOS) ou `a` (émulateur Android) : Expo y installe tout seul la version d'Expo Go compatible SDK 57. Le projet est 100 % managed, aucun code natif custom.
+Puis touche `i` (simulateur iOS). Expo y installe tout seul la version d'Expo Go compatible SDK 57. Le projet est 100% managed, aucun code natif custom.
 
-Pas de backend : les données viennent d'une fixture locale servie avec ~500 ms de délai simulé — c'est voulu, conforme au brief. Les checks : `npm run check` (biome + typecheck + vitest + knip).
+Pas de backend : les données viennent d'une fixture locale servie avec ~500 ms de délai simulé. C'est voulu, conforme au brief. Les checks : `npm run check` (biome + typecheck + vitest + knip).
 
 ## Stack
 
-- **Expo Router** — shell à tabs ; les boutons du header et les tabs hors Accueil poussent des pages placeholder
-- **TanStack Query** — le feed sort d'une fixture JSON via un mock client ; [api.ts](src/features/feed/api.ts) est la couture prévue pour un vrai backend
-- **Zustand** — état client du feed (progression, like/pass)
-- **Reanimated** — overlay de réaction like/pass
+- **Expo Router**, shell à tabs : les boutons du header et les tabs hors Accueil montrent des pages placeholder
+- **TanStack Query**, le feed sort d'une fixture JSON via un mock client : [api.ts](src/features/feed/api.ts) serait le point d'entrée prévue si on ajoute un vrai backend.
+- **Zustand**, état client du feed (progression, like/pass)
+- **Reanimated**, pour les animations like/pass
 - **expo-image** (placeholders thumbhash), **react-native-svg** (rings, logo), icônes **lucide**
-
-Le vocabulaire du domaine (Profile, Card, Likable Card, Photo Allowance…) est dans [CONTEXT.md](CONTEXT.md).
 
 ## Démarche
 
-Point de départ : le brief, le JSON d'exemple, et le screen que tu m'as laissé sur Notion — je l'ai traité comme un mockup livré par un designer. Je n'ai volontairement pas multiplié les captures du vrai feed bpm : avec Fable 5, le challenge aurait été trop simple.
+Point de départ : le brief via le Notion que tu m'as partagé + le JSON d'exemple, et le screen que tu m'as laissé sur Notion. Je l'ai traité comme un mockup livré par un designer. Je n'ai volontairement pas multiplié les captures du vrai feed bpm : avec Fable 5, le challenge aurait été trop simple.
 
-Tout est fait avec Claude Code (Fable 5) et mes skills perso, en une grosse après-midi de travail. Mon workflow en trois temps :
+Tout est fait avec Claude Code (Fable 5 ou Opus 4.8) et mes skills perso, en une grosse après-midi de travail. Mon workflow se sépare en trois process :
 
-(note: pas facile de partager une conversation avec Claude Desktop, j'ai du tout convertir en html donc tu risque de devoir les téléchargers pour visionner les conversations)
+(note: pas facile de partager une conversation depuis Claude Desktop, donc j'ai généré un HTML pour chaque conversation).
 
-1. **Grilling** — l'IA m'interviewe (~20 questions, une par une) et toutes les décisions sont figées avant de coder. [Voir la conversation](LIEN_GRILLING_A_COLLER)
-2. **to-issues** — le plan est découpé en 11 issues, des tranches verticales livrables dans l'ordre. Elles sont dans [.grilled/issues/](.grilled/issues/) — je les laisse volontairement dans le repo pour que vous puissiez les lire.
-3. **implement-next-issue** — une issue = une conversation fraîche = une PR mergée dans `main`, avec `npm run check` à chaque fois. [Voir un exemple](LIEN_IMPLEMENT_A_COLLER)
+1. **Grilling**, l'IA m'interviewe (~20 questions) et toutes les décisions sont figées avant de coder. [Voir la conversation](https://htmlpreview.github.io/?https://github.com/hugobayoud/bpm-test-technique/blob/main/docs/conversations/grilling.html)
+2. **to-issues**, le plan est découpé en 11 issues, à implémenté dans l'ordre. Elles sont dans [.grilled/issues/](.grilled/issues/) . Je les laisse volontairement dans le repo pour que tu puisses les lire mais en temps normal, je ne les aurait pas commité (pas utile).
+3. **implement-next-issue**, une issue = une conversation fraîche = une PR mergée dans `main`, avec `npm run check` à chaque fois. [Voir un exemple](https://htmlpreview.github.io/?https://github.com/hugobayoud/bpm-test-technique/blob/main/docs/conversations/implement-next-issue.html)
 
-Une conversation neuve par issue, c'est l'IA qui repart sur une base saine : pas de pollution des issues précédentes, et on reste sous ~250K tokens — au-delà, elle hallucine nettement plus.
+J'ai tendance à créer une nouvelle conversation neuve par issue pour que l'IA reparte sur une base saine : pas de pollution des issues précédentes, et on reste sous ~250K tokens. Au-delà, je trouve qu'elle hallucine beaucoup plus.
 
-Les deux premières issues posent le socle : Expo / Expo Go et les ressources (icônes, iOS, Android), puis le tooling — biome (formatage), knip (code mort), vitest (tests sur la logique pure uniquement).
+Les deux premières issues posent le socle de la codebase : Expo / Expo Go et les ressources (icônes, iOS, Android), puis le tooling :
 
-La page d'envoi de like est arrivée dans un second temps. J'ai d'abord dessiné mes mockups sur Figma (les deux états : superlikes restants ou épuisés), puis une session **grill-the-interface** pour trancher toutes les questions d'UI avant de coder — ça a donné les 4 dernières issues. [Voir la conversation](LIEN_INTERFACE_A_COLLER)
+- biome (formatage),
+- knip (code mort),
+- vitest (tests sur la logique pure uniquement).
 
-## Deux divergences assumées
+La page d'envoi de like est arrivée dans un second temps. J'ai d'abord dessiné mes mockups sur Figma (les deux états : superlikes restants ou épuisés, cf. plus bas), puis une session avec le skill **grill-the-interface** pour trancher toutes les questions d'UI avant de coder. Ça a donné les 4 dernières issues. [Voir la conversation](https://htmlpreview.github.io/?https://github.com/hugobayoud/bpm-test-technique/blob/main/docs/conversations/grill-the-interface.html)
+
+## Deux divergences assumées avec l'app actuelle
 
 ### 1. La carte « photos verrouillées »
 
-| Original bpm                                                                                       | Ma version                                                                                           |
-| -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| <img src="docs/readme/locked-picture-original.jpeg" width="230" alt="Carte verrouillée originale"> | <img src="docs/readme/locked-picture-proposal.jpeg" width="230" alt="Carte verrouillée, ma version"> |
+| Original bpm | Ma version |
+| ------------ | ---------- |
+|              |            |
 
-Le message original m'a vraiment fait hésiter : « Tu n'as pas assez de photos » en plein milieu du profil de quelqu'un d'autre, avec un bouton pour ajouter _mes_ photos. La règle est bonne — on voit autant de photos qu'on en partage — mais le wording la cache. Je l'ai reformulée pour l'expliquer : « Tu vois autant de photos que tu en partages. »
+Le message original m'a vraiment fait hésiter : « Tu n'as pas assez de photos » en plein milieu du profil de quelqu'un d'autre, avec un bouton pour ajouter _mes_ photos. La règle est bonne, on voit autant de photos qu'on en partage, mais le wording ne m'a pas permis de comprendre directement. Je l'ai reformulée pour l'expliquer : « Tu vois autant de photos que tu en partages. »
 
 ### 2. La page d'envoi de like
 
-| Original bpm                                                                               | Superlikes restants                                                                                                      | Plus de superlikes                                                                                                    |
-| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
-| <img src="docs/readme/envoie-like-original.jpeg" width="230" alt="Envoi de like original"> | <img src="docs/readme/envoie-like-proposal-superlikes-remaining.jpeg" width="230" alt="Ma version, superlikes restants"> | <img src="docs/readme/envoie-like-proposal-no-superlikes-left.jpeg" width="230" alt="Ma version, plus de superlikes"> |
+| Original bpm | Superlikes restants | Plus de superlikes |
+| ------------ | ------------------- | ------------------ |
+|              |                     |                    |
 
-La page originale me semble perfectible, j'ai donc proposé autre chose. Deux états pensés dès le mockup : s'il reste des superlikes, le CTA Superlike est mis en avant ; sinon, la page devient un point d'entrée pour en obtenir. Un champ de message personnalisé accompagne le like dans les deux cas.
+La page originale me semble perfectible, je vous ai donc proposé autre chose. Deux états créés via des mockups : s'il reste des superlikes, le CTA Superlike est mis en avant. Sinon, la page a une redirection pour en obtenir.
 
 ## Choix et libertés
 
-- **Bouton restart** sur le feed vide — affordance de démo, rejoue le même feed.
-- **Labels français inventés** pour les types de relation : casual = « Fractionné — À fond, puis on souffle », intimate = « Sprint — Intense, sans détour ». Exclusive (« Endurance ») reprend le wording réel de l'app.
-- **Icônes** : lucide partout ; le glyphe de citation bpm est remplacé par `Quote` (rempli) — assets originaux indisponibles.
+- **Logo et icônes custom** le brief ne fournissait pas le logo de bpm pour la tab bar ni le petit icône custom dans les card de type prompt. J'ai donc recréé rapidement le logo de BPM sur Figma au format svg, il est donc pas parfait mais je n'allais pas t'embêter avec ça. Et pour l'icône custom de la card prompt, j'ai mis une alternative de lucide.
 - **Couleurs à la pipette** (approximatives) pour celles hors palette du brief : `accentPurple`, `accentPink`, gris des panneaux.
-- **Rings sport** : remplissage proportionnel à la fréquence d'entraînement (1-2 → 1/3, 3-4 → 2/3, 5+ → plein) — règle inventée.
-
-  <img src="docs/readme/sport-card-rings.jpeg" width="340" alt="Rings de la carte sport">
-
-- **Photo Allowance** appliquée côté client avec `VIEWER_UPLOADED_PHOTOS_COUNT = 3`. Elle ne se déclenche jamais sur la fixture (2 photos max par profil) — couverte par les tests unitaires ; passer la constante à 1 pour la voir en live.
+- **Rings sport** : remplissage proportionnel à la fréquence d'entraînement (1-2 → 1/3, 3-4 → 2/3, 5+ → plein), règle inventée, je suis pas sûr que ce soit exactement la bonne.
+- **Photo Allowance** Pour pouvoir voir, sur certains profil la card "photos verrouillées", j'ai dû appliquée dans le code une règle avec `VIEWER_UPLOADED_PHOTOS_COUNT = 3` pour que la card "photos verrouillées" apparaissent sur certains profils.
 - **Ratio photo fixe ~3:4.**
 - **Contrôles inertes** : « Bloquer & Signaler » et « Ajouter mes photos » ne font rien ; boutons du header et tabs hors Accueil mènent à des pages placeholder.
-- **Badges statiques** : Likes (4) et Boost (1) — les likes entrants ne sont pas modélisés.
+- **Badges statiques** : Likes (4) et Boost (1)
 - **Pas de persistance** : l'état du feed vit en mémoire ; pas de fausses mutations like/pass.
-- **Enums sûrement pas exhaustifs** — les types sont déduits du seul JSON d'exemple.
-- **Champs du JSON non affichés** : `sportIcon`, la `trainingFrequency` globale de la carte sport, la `category` des prompts et les champs cachés d'`info_card` — le mockup ne les montre pas.
-- **Cal Sans** récupérée sur Google Fonts et embarquée dans le projet ; réservée aux titres.
-- **Logo bpm refait à la main en SVG** pour la tab bar — pas parfait, mais il fait le taff.
+- **Enums sûrement pas exhaustifs** : les types sont déduits du seul JSON d'exemple.
+- **Cal Sans :** récupérée sur Google Fonts et embarquée dans le projet, réservée aux titres.
 
 ## Et avec plus de temps ?
 
-- **Brancher un vrai backend** — [api.ts](src/features/feed/api.ts) est la couture : remplacer le mock client par de vraies requêtes, ajouter les mutations like/pass.
-- **Persister** l'état du feed — aujourd'hui tout est en mémoire.
-- **Durcir les types** — les enums méritent un vrai contrat d'API plutôt qu'une déduction depuis un JSON d'exemple.
+- **Brancher un vrai backend** evidemment. Avec [api.ts](src/features/feed/api.ts) , remplacer le mock client par de vraies requêtes, ajouter les mutations like/pass.
+- **Persister** l'état du feed. Aujourd'hui tout est en mémoire sur le tel.
+- **Durcir les types**. Les enums méritent une vraie liste exhaustive.
