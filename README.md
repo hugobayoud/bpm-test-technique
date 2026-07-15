@@ -10,9 +10,9 @@ Expo Go ne supporte plus le SDK 57, l'app se teste donc en build standalone.
 
 **Android.** Scanner ce QR code, installer l'APK (Android demande une confirmation, normal hors Play Store), c'est tout :
 
-<img src="docs/readme/qr-expo.jpeg" width="220" alt="QR code d'installation de l'APK Android">
+<img src="docs/readme/qr-expo.png" width="220" alt="QR code d'installation de l'APK Android">
 
-Lien direct : [installer l'APK](https://expo.dev/accounts/hugobayoud/projects/bpm-test-technique/builds/ba2495e0-f197-4dbe-890f-ecb90bfdcd59)
+Lien direct : [installer l'APK](https://expo.dev/accounts/hugobayoud/projects/bpm-test-technique/builds/6bb78e14-a173-4b2e-a52f-0f5de101a818)
 
 Le build utilise notamment EAS Update si je fais une mise à jour.
 
