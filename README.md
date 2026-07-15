@@ -2,11 +2,17 @@
 
 Recréation du feed bpm : les profils défilent verticalement card par card, on peut liker une card précise ou on passe le profil entier, et le feed avance. (data en local)
 
+<img src="docs/readme/feed.jpeg" width="260" alt="Aperçu du feed">
+
 ## Tester l'app
 
 Expo Go ne supporte plus le SDK 57, l'app se teste donc en build standalone.
 
 **Android** Scanner ce QR code, installer l'APK (Android demande une confirmation, normal hors Play Store), c'est tout :
+
+<!-- TODO après le build cloud EAS : déposer la capture du QR en docs/readme/qr-expo.jpeg puis remplacer ce commentaire par :
+<img src="docs/readme/qr-expo.jpeg" width="220" alt="QR code d'installation de l'APK Android">
+-->
 
 Lien direct : [installer l'APK](LIEN_INSTALL_APK_A_COLLER)
 
@@ -59,7 +65,7 @@ La page d'envoi de like est arrivée dans un second temps. J'ai d'abord dessiné
 
 | Original bpm | Ma version |
 | ------------ | ---------- |
-|              |            |
+| <img src="docs/readme/locked-picture-original.jpeg" width="230" alt="Carte verrouillée originale"> | <img src="docs/readme/locked-picture-proposal.jpeg" width="230" alt="Carte verrouillée, ma version"> |
 
 Le message original m'a vraiment fait hésiter : « Tu n'as pas assez de photos » en plein milieu du profil de quelqu'un d'autre, avec un bouton pour ajouter _mes_ photos. La règle est bonne, on voit autant de photos qu'on en partage, mais le wording ne m'a pas permis de comprendre directement. Je l'ai reformulée pour l'expliquer : « Tu vois autant de photos que tu en partages. »
 
@@ -67,7 +73,7 @@ Le message original m'a vraiment fait hésiter : « Tu n'as pas assez de photos 
 
 | Original bpm | Superlikes restants | Plus de superlikes |
 | ------------ | ------------------- | ------------------ |
-|              |                     |                    |
+| <img src="docs/readme/envoie-like-original.jpeg" width="230" alt="Envoi de like original"> | <img src="docs/readme/envoie-like-proposal-superlikes-remaining.jpeg" width="230" alt="Ma version, superlikes restants"> | <img src="docs/readme/envoie-like-proposal-no-superlikes-left.jpeg" width="230" alt="Ma version, plus de superlikes"> |
 
 La page originale me semble perfectible, je vous ai donc proposé autre chose. Deux états créés via des mockups : s'il reste des superlikes, le CTA Superlike est mis en avant. Sinon, la page a une redirection pour en obtenir.
 
@@ -76,6 +82,8 @@ La page originale me semble perfectible, je vous ai donc proposé autre chose. D
 - **Logo et icônes custom** le brief ne fournissait pas le logo de bpm pour la tab bar ni le petit icône custom dans les card de type prompt. J'ai donc recréé rapidement le logo de BPM sur Figma au format svg, il est donc pas parfait mais je n'allais pas t'embêter avec ça. Et pour l'icône custom de la card prompt, j'ai mis une alternative de lucide.
 - **Couleurs à la pipette** (approximatives) pour celles hors palette du brief : `accentPurple`, `accentPink`, gris des panneaux.
 - **Rings sport** : remplissage proportionnel à la fréquence d'entraînement (1-2 → 1/3, 3-4 → 2/3, 5+ → plein), règle inventée, je suis pas sûr que ce soit exactement la bonne.
+
+  <img src="docs/readme/sport-card-rings.jpeg" width="340" alt="Rings de la carte sport">
 - **Photo Allowance** Pour pouvoir voir, sur certains profil la card "photos verrouillées", j'ai dû appliquée dans le code une règle avec `VIEWER_UPLOADED_PHOTOS_COUNT = 3` pour que la card "photos verrouillées" apparaissent sur certains profils.
 - **Ratio photo fixe ~3:4.**
 - **Contrôles inertes** : « Bloquer & Signaler » et « Ajouter mes photos » ne font rien ; boutons du header et tabs hors Accueil mènent à des pages placeholder.
