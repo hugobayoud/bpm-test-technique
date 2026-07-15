@@ -10,6 +10,9 @@ export const COLORS = {
   primary: '#E1FF00',
   boost: '#48C1F3',
   superlike: '#FF5252',
+  // Same hue at alpha 0: gradient endpoint for the send-like scrim (plain
+  // 'transparent' fades through black with expo-linear-gradient).
+  superlikeTransparent: 'rgba(255, 82, 82, 0)',
   accentPurple: '#B36BFF',
   accentPink: '#FF2D87',
   textMuted: '#9A9A9A',

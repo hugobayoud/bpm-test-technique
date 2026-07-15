@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>Envoyer un like — mockup v1 (0 Superlikes)</title>
+<style>
+  /* ==== app palette: mirror of src/utils/colors.ts — do not invent values ==== */
+  :root {
+    --surface: #0D0D0D;
+    --panel: #1A1A1A;
+    --fill: #FFFFFF;
+    --fill-opposite: #0D0D0D;
+    --stroke-default: rgba(255, 255, 255, 0.05);
+    --stroke-strong: rgba(255, 255, 255, 0.1);
+    --primary: #E1FF00;
+    --superlike: #FF5252;
+    --accent-purple: #B36BFF;
+    --accent-pink: #FF2D87;
+    --text-muted: #9A9A9A;
+  }
+  @font-face {
+    font-family: 'CalSans';
+    src: url('../../src/assets/fonts/cal-sans-regular.ttf') format('truetype');
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #050505;
+    color: var(--fill);
+    font-family: -apple-system, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
+    padding: 40px 32px 80px;
+  }
+  h1 { font-family: 'CalSans', sans-serif; font-size: 28px; margin-bottom: 6px; }
+  .sub { color: var(--text-muted); font-size: 14px; margin-bottom: 36px; max-width: 720px; line-height: 1.5; }
+  h2 { font-family: 'CalSans', sans-serif; font-size: 18px; margin: 48px 0 16px; }
+  .row { display: flex; gap: 40px; flex-wrap: wrap; align-items: flex-start; }
+  .variant { display: flex; flex-direction: column; gap: 12px; }
+  .caption { color: var(--text-muted); font-size: 13px; max-width: 393px; line-height: 1.5; }
+  .caption b { color: var(--fill); font-weight: 600; }
+
+  /* ==== phone frame ==== */
+  .phone {
+    width: 393px; height: 852px;
+    background: var(--surface);
+    border-radius: 48px;
+    border: 1px solid var(--stroke-strong);
+    overflow: hidden;
+    position: relative;
+    display: flex; flex-direction: column;
+    flex-shrink: 0;
+  }
+  .statusbar {
+    height: 54px; flex-shrink: 0;
+    display: flex; align-items: flex-end; justify-content: space-between;
+    padding: 0 32px 8px;
+    font-size: 15px; font-weight: 600;
+  }
+
+  /* ==== hero: uniform frame, all card kinds ==== */
+  .hero {
+    margin: 4px 12px 0;
+    height: 492px; /* 369 wide -> 3:4 */
+    border-radius: 32px;
+    overflow: hidden;
+    position: relative;
+    background: var(--panel);
+    flex-shrink: 0;
+  }
+  .hero > img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .scrim {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, var(--superlike) 0%, var(--superlike) 12%, transparent 62%);
+  }
+  .cancel-chip {
+    position: absolute; top: 16px; right: 16px;
+    background: var(--panel);
+    color: var(--fill);
+    font-size: 15px; font-weight: 600;
+    padding: 10px 20px; border-radius: 999px;
+    min-height: 40px;
+  }
+  .hero-copy { position: absolute; left: 20px; right: 20px; bottom: 22px; }
+  .hero-title {
+    font-family: 'CalSans', sans-serif;
+    font-size: 33px; line-height: 1.06;
+    color: var(--fill);
+    margin-bottom: 10px;
+  }
+  .hero-count {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 17px; color: var(--fill); opacity: 0.9;
+  }
+
+  /* text-card content embedded in the hero (top-aligned, panel bg).
+     top inset clears the "annuler" chip zone so text never collides with it */
+  .hero-card {
+    position: absolute; inset: 0;
+    padding: 76px 20px 20px;
+    background: var(--panel);
+    border: 1px solid var(--stroke-default);
+    border-radius: 32px;
+  }
+  .prompt-head { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .quote-badge {
+    width: 32px; height: 32px; border-radius: 12px;
+    background: var(--stroke-strong);
+    display: grid; place-items: center; flex-shrink: 0;
+  }
+  .prompt-title { color: var(--text-muted); font-size: 11px; font-weight: 600; letter-spacing: .3px; text-transform: uppercase; }
+  .prompt-answer { font-family: 'CalSans', sans-serif; font-size: 23px; color: var(--fill); line-height: 1.25; }
+
+  .sport-body { display: flex; align-items: center; gap: 16px; }
+  .sport-list { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+  .sport-label { color: var(--text-muted); font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
+  .sport-row { display: flex; align-items: center; gap: 10px; font-size: 17px; }
+  .sport-row .leader { flex: 1; border-bottom: 2px dotted rgba(154,154,154,.5); transform: translateY(3px); }
+  .sport-row .val { font-weight: 700; }
+
+  /* ==== message field ==== */
+  .msg { margin: 26px 20px 0; flex-shrink: 0; }
+  .msg .field {
+    color: var(--text-muted); font-size: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--stroke-strong);
+  }
+  .msg.filled .field { color: var(--fill); }
+  .caret { display: inline-block; width: 2px; height: 18px; background: var(--fill); vertical-align: -3px; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .spacer { flex: 1; }
+
+  /* ==== bottom CTAs ==== */
+  .ctas { padding: 0 20px 14px; display: flex; flex-direction: column; gap: 22px; flex-shrink: 0; }
+  .get-superlike {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    color: var(--superlike); font-size: 19px; font-weight: 700;
+    min-height: 44px;
+  }
+  .send-like {
+    height: 58px; border-radius: 999px;
+    background: var(--fill); color: var(--fill-opposite);
+    display: grid; place-items: center;
+    font-size: 20px; font-weight: 700;
+  }
+  .send-like.pressed { opacity: .7; }
+  .cancel-chip.pressed { opacity: .7; }
+  .home-bar { width: 140px; height: 5px; border-radius: 3px; background: var(--fill); opacity: .9; margin: 4px auto 10px; flex-shrink: 0; }
+
+  /* ==== fake iOS keyboard ==== */
+  .keyboard {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    background: #202023; padding: 8px 4px 24px;
+    display: flex; flex-direction: column; gap: 9px;
+  }
+  .krow { display: flex; gap: 5px; justify-content: center; }
+  .key {
+    background: #4a4a4d; border-radius: 6px; height: 42px; flex: 1; max-width: 34px;
+    display: grid; place-items: center; font-size: 16px;
+    box-shadow: 0 1px 0 rgba(0,0,0,.4);
+  }
+  .key.wide { max-width: none; flex: 3; font-size: 14px; }
+  .key.dark { background: #2c2c2e; }
+
+  /* ==== states table ==== */
+  table { border-collapse: collapse; font-size: 13px; color: var(--fill); }
+  th, td { border: 1px solid var(--stroke-strong); padding: 10px 16px; text-align: left; vertical-align: middle; }
+  th { color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 11px; letter-spacing: .5px; }
+  td .mini-pill { display: inline-grid; place-items: center; background: var(--fill); color: var(--fill-opposite); font-weight: 700; font-size: 14px; border-radius: 999px; padding: 10px 22px; }
+  td .mini-chip { display: inline-block; background: var(--panel); font-weight: 600; font-size: 12px; border-radius: 999px; padding: 7px 14px; }
+  td .mini-ghost { color: var(--superlike); font-weight: 700; font-size: 14px; }
+  .dim { opacity: .7; }
+  .muted { color: var(--text-muted); }
+</style>
+</head>
+<body>
+
+<h1>Envoyer un like — 0 Superlikes restants</h1>
+<p class="sub">
+  Route expo-router <b>fullScreenModal</b> (tab bar masquée), ouverte au tap sur n'importe quel bouton like d'une
+  Likable Card, <b>avant</b> l'animation de like existante. Palette strictement <code>COLORS</code> :
+  scrim <code>superlike #FF5252</code>, titre Cal Sans, CTA primaire blanc. « Obtenir Superlike » est rendu
+  comme sur la maquette mais <b>inerte</b> (scope : 0 Superlikes, pas de paywall).
+</p>
+
+<div class="row">
+
+  <!-- ============ 1. photo card liked ============ -->
+  <div class="variant">
+    <div class="phone">
+      <div class="statusbar"><span>9:41</span><span>▪▪▪ ⌁ ▮</span></div>
+      <div class="hero">
+        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=900&q=80" alt="" />
+        <div class="scrim"></div>
+        <div class="cancel-chip">annuler</div>
+        <div class="hero-copy">
+          <div class="hero-title">Envoyer un like<br/>à Camille</div>
+          <div class="hero-count">
+            Il vous reste 0 Superlikes
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--fill)"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="msg"><div class="field">Un petit message personnalisé (optionnel)</div></div>
+      <div class="spacer"></div>
+      <div class="ctas">
+        <div class="get-superlike">
+          Obtenir Superlike
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--superlike)"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+        </div>
+        <div class="send-like">Envoyer Like</div>
+      </div>
+      <div class="home-bar"></div>
+    </div>
+    <p class="caption"><b>1 — Carte photo likée.</b> Hero = la photo likée, cadre 3:4, rayon 32, scrim
+    <span style="color:var(--superlike)">#FF5252</span> transparent→opaque. « annuler » = chip
+    <code>panel</code> en haut à droite. Retour Android = annuler.</p>
+  </div>
+
+  <!-- ============ 2. prompt answer liked ============ -->
+  <div class="variant">
+    <div class="phone">
+      <div class="statusbar"><span>9:41</span><span>▪▪▪ ⌁ ▮</span></div>
+      <div class="hero">
+        <div class="hero-card">
+          <div class="prompt-head">
+            <span class="quote-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--fill)"><path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/><path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/></svg>
+            </span>
+            <span class="prompt-title">Mon meilleur souvenir de voyage</span>
+          </div>
+          <div class="prompt-answer">Un trek de 5 jours en Patagonie, sans réseau et sans regrets.</div>
+        </div>
+        <div class="scrim"></div>
+        <div class="cancel-chip">annuler</div>
+        <div class="hero-copy">
+          <div class="hero-title">Envoyer un like<br/>à Camille</div>
+          <div class="hero-count">
+            Il vous reste 0 Superlikes
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--fill)"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="msg"><div class="field">Un petit message personnalisé (optionnel)</div></div>
+      <div class="spacer"></div>
+      <div class="ctas">
+        <div class="get-superlike">
+          Obtenir Superlike
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--superlike)"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+        </div>
+        <div class="send-like">Envoyer Like</div>
+      </div>
+      <div class="home-bar"></div>
+    </div>
+    <p class="caption"><b>2 — Prompt answer likée.</b> Même cadre uniforme : contenu de la carte
+    (header + réponse Cal Sans) sur fond <code>panel</code>, inset sous la zone du chip « annuler »,
+    sans bouton like, scrim + titre identiques. Le texte long file sous le scrim.</p>
+  </div>
+
+  <!-- ============ 3. sport card liked ============ -->
+  <div class="variant">
+    <div class="phone">
+      <div class="statusbar"><span>9:41</span><span>▪▪▪ ⌁ ▮</span></div>
+      <div class="hero">
+        <div class="hero-card">
+          <div class="sport-body">
+            <svg width="96" height="96" viewBox="0 0 96 96" fill="none" style="flex-shrink:0">
+              <circle cx="48" cy="48" r="40" stroke="var(--stroke-strong)" stroke-width="9"/>
+              <circle cx="48" cy="48" r="40" stroke="var(--primary)" stroke-width="9" stroke-linecap="round" stroke-dasharray="251.3 251.3" transform="rotate(-90 48 48)"/>
+              <circle cx="48" cy="48" r="28" stroke="var(--stroke-strong)" stroke-width="9"/>
+              <circle cx="48" cy="48" r="28" stroke="var(--accent-purple)" stroke-width="9" stroke-linecap="round" stroke-dasharray="117.3 175.9" transform="rotate(-90 48 48)"/>
+              <circle cx="48" cy="48" r="16" stroke="var(--stroke-strong)" stroke-width="9"/>
+              <circle cx="48" cy="48" r="16" stroke="var(--accent-pink)" stroke-width="9" stroke-linecap="round" stroke-dasharray="33.5 100.5" transform="rotate(-90 48 48)"/>
+            </svg>
+            <div class="sport-list">
+              <div class="sport-label">Séances / semaine</div>
+              <div class="sport-row"><span>Escalade</span><span class="leader"></span><span class="val" style="color:var(--primary)">5+</span></div>
+              <div class="sport-row"><span>Course à pied</span><span class="leader"></span><span class="val" style="color:var(--accent-purple)">3-4</span></div>
+              <div class="sport-row"><span>Yoga</span><span class="leader"></span><span class="val" style="color:var(--accent-pink)">1-2</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="scrim"></div>
+        <div class="cancel-chip">annuler</div>
+        <div class="hero-copy">
+          <div class="hero-title">Envoyer un like<br/>à Camille</div>
+          <div class="hero-count">
+            Il vous reste 0 Superlikes
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--fill)"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="msg"><div class="field">Un petit message personnalisé (optionnel)</div></div>
+      <div class="spacer"></div>
+      <div class="ctas">
+        <div class="get-superlike">
+          Obtenir Superlike
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--superlike)"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+        </div>
+        <div class="send-like">Envoyer Like</div>
+      </div>
+      <div class="home-bar"></div>
+    </div>
+    <p class="caption"><b>3 — Sport card likée.</b> Rings + liste alignés en haut du cadre, le reste du
+    panel respire, scrim identique. Composition strictement partagée avec les deux autres.</p>
+  </div>
+
+  <!-- ============ 4. keyboard open ============ -->
+  <div class="variant">
+    <div class="phone">
+      <div class="statusbar"><span>9:41</span><span>▪▪▪ ⌁ ▮</span></div>
+      <div class="hero">
+        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=900&q=80" alt="" />
+        <div class="scrim"></div>
+        <div class="cancel-chip">annuler</div>
+        <div class="hero-copy">
+          <div class="hero-title">Envoyer un like<br/>à Camille</div>
+          <div class="hero-count">
+            Il vous reste 0 Superlikes
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--fill)"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="msg filled"><div class="field">Salut, la Patagonie ça donne envie<span class="caret"></span></div></div>
+      <div class="spacer"></div>
+      <div class="keyboard">
+        <div class="krow"><span class="key">a</span><span class="key">z</span><span class="key">e</span><span class="key">r</span><span class="key">t</span><span class="key">y</span><span class="key">u</span><span class="key">i</span><span class="key">o</span><span class="key">p</span></div>
+        <div class="krow"><span class="key">q</span><span class="key">s</span><span class="key">d</span><span class="key">f</span><span class="key">g</span><span class="key">h</span><span class="key">j</span><span class="key">k</span><span class="key">l</span><span class="key">m</span></div>
+        <div class="krow"><span class="key dark">⇧</span><span class="key">w</span><span class="key">x</span><span class="key">c</span><span class="key">v</span><span class="key">b</span><span class="key">n</span><span class="key">'</span><span class="key dark">⌫</span></div>
+        <div class="krow"><span class="key dark wide">123</span><span class="key wide" style="flex:6">espace</span><span class="key dark wide">retour</span></div>
+      </div>
+    </div>
+    <p class="caption"><b>4 — Clavier ouvert (layout statique).</b> Champ single-line, le clavier recouvre
+    les CTA ; « retour » ferme le clavier, puis on envoie. Le texte est un état local, jeté à l'envoi
+    comme à l'annulation (liberté README, pas de fausse mutation).</p>
+  </div>
+</div>
+
+<!-- ============ states ============ -->
+<h2>États &amp; destinations</h2>
+<table>
+  <tr><th>Élément</th><th>Repos</th><th>Pressé</th><th>Désactivé</th><th>Destination au tap</th></tr>
+  <tr>
+    <td>annuler (chip)</td>
+    <td><span class="mini-chip">annuler</span></td>
+    <td><span class="mini-chip dim">annuler</span> opacité .7</td>
+    <td class="muted">—</td>
+    <td>router.back() — feed intact, rien d'enregistré. Idem bouton retour Android. Pas de swipe-dismiss iOS (fullScreenModal).</td>
+  </tr>
+  <tr>
+    <td>Obtenir Superlike (texte)</td>
+    <td class="muted">—</td>
+    <td class="muted">— aucun feedback</td>
+    <td><span class="mini-ghost">Obtenir Superlike ♥</span> rouge plein, inerte</td>
+    <td>Aucune — disabled + accessibilityState. Hit-slop conservé (44px) pour la cohérence future.</td>
+  </tr>
+  <tr>
+    <td>Envoyer Like (pill)</td>
+    <td><span class="mini-pill">Envoyer Like</span></td>
+    <td><span class="mini-pill dim">Envoyer Like</span> opacité .7</td>
+    <td class="muted">—</td>
+    <td>router.back() + likeCard(cardId) simultanés → l'overlay lime apparaît sous la modale qui descend → advance sous l'overlay opaque.</td>
+  </tr>
+  <tr>
+    <td>Champ message</td>
+    <td class="muted">placeholder textMuted, filet strokeStrong</td>
+    <td class="muted">focus : caret, texte fill (pas d'autre chrome)</td>
+    <td class="muted">—</td>
+    <td>« retour » ferme le clavier. Contenu local, jamais transmis.</td>
+  </tr>
+</table>
+
+</body>
+</html>

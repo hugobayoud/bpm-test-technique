@@ -58,6 +58,25 @@ export const LIKE_LABEL = 'Liker';
 export const PASS_LABEL = 'Passer';
 export const BLOCK_REPORT_LABEL = 'Bloquer & Signaler';
 
+// Send-like modal dismiss chip ("annuler" is lowercase in the mockup).
+export const CANCEL_LABEL = 'annuler';
+
+// Deliberately static (README liberty), like LIKES_TAB_BADGE: the viewer's
+// Superlike balance is not modeled. Only the 0-Superlikes scenario is built.
+export const SUPERLIKES_REMAINING = 0;
+
+// Send-like hero copy: title prefix (completed with the profile's firstname)
+// and the Superlike count line under it.
+export const SEND_LIKE_TITLE_PREFIX = 'Envoyer un like à';
+export const SUPERLIKES_REMAINING_LABEL = `Il vous reste ${SUPERLIKES_REMAINING} Superlikes`;
+
+// Send-like modal lower half. The message is local state only, discarded on
+// send and cancel (README liberty: no fake mutation, api.ts stays the seam).
+// "Obtenir Superlike" is rendered but inert (0-Superlikes scope, no paywall).
+export const MESSAGE_PLACEHOLDER = 'Un petit message personnalisé (optionnel)';
+export const GET_SUPERLIKE_LABEL = 'Obtenir Superlike';
+export const SEND_LIKE_LABEL = 'Envoyer Like';
+
 // Reaction overlay sequence: opaque fade-in, hold with the popping icon while
 // the profile swap happens invisibly underneath, fade-out onto the next one.
 export const REACTION_FADE_IN_MS = 200;
