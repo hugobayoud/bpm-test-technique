@@ -1,6 +1,6 @@
 # bpm feed — test technique
 
-Recreate the bpm dating-app feed (Expo SDK 57 / RN 0.86, npm, Expo Go only — no custom native code). Brief: `docs/brief.md`. Domain glossary: `CONTEXT.md` (Profile, Card, Likable Card, Photo Allowance…). Work is sliced into `.grilled/issues/` and implemented in order via the implement-next-issue skill.
+Recreate the bpm dating-app feed (Expo SDK 57 / RN 0.86, npm, Expo Go only — no custom native code). Domain glossary: `CONTEXT.md` (Profile, Card, Likable Card, Photo Allowance…). Work is sliced into `.grilled/issues/` and implemented in order via the implement-next-issue skill.
 
 ## Commands
 
