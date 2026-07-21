@@ -1,6 +1,6 @@
 title: Coach — Recommencer & fallback déterministe
 type: AFK
-status: todo
+status: done
 
 ---
 

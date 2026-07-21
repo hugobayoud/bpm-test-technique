@@ -41,9 +41,17 @@ One of the four matching preferences the user sets about who they want to meet: 
 _Avoid_: preference, setting, critère
 
 **Coach**:
-The guided in-app assistant that gets the user to answer their unanswered Filtres, one Coach Question at a time. Never free chat: the user answers through the app's own controls, never by typing.
+The guided in-app assistant that gets the user to complete their profile — today, their four unanswered Filtres — one Coach Question at a time, awarding a Coach Score for each completion. Never free chat: the user answers through the app's own controls, never by typing.
 _Avoid_: chatbot, assistant
 
 **Coach Question**:
 One step of the Coach — an unanswered Filtre picked by the LLM, plus the personalized question text it wrote. The possible values and the control always come from the app's catalogue, never from the LLM.
 _Avoid_: prompt (already means the feed's prompt cards)
+
+**Coach Score**:
+The user's running total of points earned by completing the items the Coach guides them through. Completing an item for the first time adds its Weight; the total only ever grows (the test build's « Recommencer » is the sole reset). It measures how far the user has come in completing their profile — never how good a match they are.
+_Avoid_: XP, completion percentage, progress bar, rating
+
+**Weight**:
+The point value of one item the Coach can complete — how much it adds to the Coach Score the first time that item is completed. Set by how much time and effort the item costs the user to answer, not by how much it matters for matching: a single enum tap is worth less than setting a two-ended age range.
+_Avoid_: difficulty, cost, importance, priority
