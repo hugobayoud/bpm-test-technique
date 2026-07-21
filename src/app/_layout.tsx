@@ -9,6 +9,10 @@ import { useEffect } from 'react';
 import { queryClient } from '@/lib/query-client';
 import { COLORS } from '@/utils/colors';
 import { TITLE_FONT_FAMILY } from '@/utils/fonts';
+// Side effect: wires the Coach Score to the filters store from app start, so
+// the monotone set reconciles on every change and backfills at first load
+// (features/coach/score-store.ts).
+import '@/features/coach/score-store';
 
 SplashScreen.preventAutoHideAsync();
 SystemUI.setBackgroundColorAsync(COLORS.surface);

@@ -1,6 +1,6 @@
 title: Coach Score — poids du catalogue & store persisté (set monotone)
 type: AFK
-status: todo
+status: done
 
 ---
 

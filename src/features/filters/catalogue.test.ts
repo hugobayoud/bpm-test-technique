@@ -3,7 +3,11 @@ import { describe, expect, it } from 'vitest';
 import {
   DEFAULT_FILTERS,
   FILTER_CATALOGUE,
+  FILTER_PRIORITY_ORDER,
+  getAnsweredFilterKeys,
+  getCoachScore,
   getEmptyFilterKeys,
+  TOTAL_WEIGHT,
 } from '@/features/filters/catalogue';
 import type { Filters } from '@/features/filters/store';
 
@@ -79,6 +83,59 @@ describe('getEmptyFilterKeys', () => {
       'max_distance',
       'relationship_type',
     ]);
+  });
+});
+
+describe('getAnsweredFilterKeys', () => {
+  it('returns nothing when every Filtre is at its sentinel', () => {
+    expect(getAnsweredFilterKeys(DEFAULT_FILTERS)).toEqual([]);
+  });
+
+  it('returns every key in priority order once all are answered', () => {
+    expect(getAnsweredFilterKeys(ANSWERED_FILTERS)).toEqual([
+      'age_range',
+      'max_distance',
+      'training_frequency',
+      'relationship_type',
+    ]);
+  });
+
+  it('is the complement of getEmptyFilterKeys on a partial subset', () => {
+    const filters: Filters = {
+      ...ANSWERED_FILTERS,
+      maxDistance: 50,
+      relationshipType: null,
+    };
+    expect(getAnsweredFilterKeys(filters)).toEqual([
+      'age_range',
+      'training_frequency',
+    ]);
+    expect(getEmptyFilterKeys(filters)).toEqual([
+      'max_distance',
+      'relationship_type',
+    ]);
+  });
+});
+
+describe('getCoachScore & TOTAL_WEIGHT', () => {
+  it('scores an empty set at 0', () => {
+    expect(getCoachScore([])).toBe(0);
+  });
+
+  it('scores each Filtre at its own weight', () => {
+    expect(getCoachScore(['age_range'])).toBe(3);
+    expect(getCoachScore(['max_distance'])).toBe(2);
+    expect(getCoachScore(['training_frequency'])).toBe(1);
+    expect(getCoachScore(['relationship_type'])).toBe(1);
+  });
+
+  it('sums the weights of a set', () => {
+    expect(getCoachScore(['age_range', 'training_frequency'])).toBe(4);
+  });
+
+  it('totals every weight to 7', () => {
+    expect(TOTAL_WEIGHT).toBe(7);
+    expect(getCoachScore(FILTER_PRIORITY_ORDER)).toBe(TOTAL_WEIGHT);
   });
 });
 

@@ -18,11 +18,14 @@ export const FILTER_PRIORITY_ORDER = [
   'relationship_type',
 ] as const satisfies readonly FilterKey[];
 
+// weight = the Coach Score points a Filtre grants the first time it is
+// completed. Set by answering effort, not matching importance (spec « Weight »).
 type RangeFilterDefinition = {
   label: string;
   unit: string;
   domain: { min: number; max: number };
   shortcuts: readonly { min: number; max: number }[];
+  weight: number;
 };
 
 type SliderFilterDefinition = {
@@ -30,11 +33,13 @@ type SliderFilterDefinition = {
   unit: string;
   domain: { min: number; max: number };
   shortcuts: readonly number[];
+  weight: number;
 };
 
 type EnumFilterDefinition<Value> = {
   label: string;
   options: readonly Value[];
+  weight: number;
 };
 
 // The catalogue: one row per Filtre — control domain, French label and frozen
@@ -51,6 +56,8 @@ export const FILTER_CATALOGUE = {
       { min: 40, max: 50 },
       { min: 50, max: 60 },
     ],
+    // Two bounds to set — the costliest answer.
+    weight: 3,
   },
   max_distance: {
     label: FILTER_LABELS.max_distance,
@@ -58,14 +65,20 @@ export const FILTER_CATALOGUE = {
     domain: { min: 5, max: 160 },
     // 50 is deliberately absent: it is the unanswered sentinel.
     shortcuts: [20, 40, 80, 160],
+    // One slider to drag.
+    weight: 2,
   },
   training_frequency: {
     label: FILTER_LABELS.training_frequency,
     options: ['little', 'mid', 'hard'],
+    // One chip to tap.
+    weight: 1,
   },
   relationship_type: {
     label: FILTER_LABELS.relationship_type,
     options: ['exclusive', 'casual', 'intimate'],
+    // One chip to tap.
+    weight: 1,
   },
 } as const satisfies {
   age_range: RangeFilterDefinition;
@@ -99,3 +112,20 @@ export function getEmptyFilterKeys(filters: Filters): FilterKey[] {
     (key) => !FILTER_IS_ANSWERED[key](filters),
   );
 }
+
+// The answered keys, in priority order — the complement of getEmptyFilterKeys.
+// The Coach Score reconciliation folds these into its monotone completed set.
+export function getAnsweredFilterKeys(filters: Filters): FilterKey[] {
+  return FILTER_PRIORITY_ORDER.filter((key) =>
+    FILTER_IS_ANSWERED[key](filters),
+  );
+}
+
+// The Coach Score of a completed set: the Σ of its Filtres' weights. The score
+// is ALWAYS derived from the set of completed keys — never stored raw.
+export function getCoachScore(keys: readonly FilterKey[]): number {
+  return keys.reduce((sum, key) => sum + FILTER_CATALOGUE[key].weight, 0);
+}
+
+// The score of a fully completed profile — the Σ of every weight (= 7).
+export const TOTAL_WEIGHT = getCoachScore(FILTER_PRIORITY_ORDER);

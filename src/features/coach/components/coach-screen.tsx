@@ -13,6 +13,7 @@ import {
   RESTART_LABEL,
 } from '@/features/coach/constants';
 import { fallbackCoachQuestion } from '@/features/coach/fallback';
+import { useCoachScoreStore } from '@/features/coach/score-store';
 import {
   BACK_LABEL,
   RELATIONSHIP_TYPE_COPY,
@@ -71,6 +72,7 @@ export function CoachScreen() {
     (state) => state.setRelationshipType,
   );
   const resetFilters = useFiltersStore((state) => state.reset);
+  const resetScore = useCoachScoreStore((state) => state.reset);
 
   const filters: Filters = {
     ageRange,
@@ -91,6 +93,7 @@ export function CoachScreen() {
     setFrozenSteps([]);
     queryClient.removeQueries({ queryKey: coachKeys.all });
     resetFilters();
+    resetScore(); // « Recommencer » is the sole Coach Score reset (spec 021).
   };
 
   // « Valider » : freeze the step, then commit to the store — emptyFields
