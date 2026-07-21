@@ -14,3 +14,24 @@ export type CoachResponse = {
   fieldKey: FilterKey;
   questionText: string;
 };
+
+// Tier 3 of the format guarantee (spec « Le pont ») : the client re-checks
+// that the response is a non-empty question for a field actually awaiting
+// one. Callers treat any failure as an error → deterministic fallback.
+export function isCoachResponse(
+  value: unknown,
+  emptyFields: readonly FilterKey[],
+): value is CoachResponse {
+  if (typeof value !== 'object' || value === null) {
+    return false;
+  }
+  const { fieldKey, questionText } = value as Partial<
+    Record<keyof CoachResponse, unknown>
+  >;
+  return (
+    typeof fieldKey === 'string' &&
+    emptyFields.some((key) => key === fieldKey) &&
+    typeof questionText === 'string' &&
+    questionText.length > 0
+  );
+}

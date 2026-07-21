@@ -1,15 +1,18 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 import { ChevronLeft } from 'lucide-react-native';
 import { Fragment, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useCoachQuestion } from '@/features/coach/api';
+import { coachKeys, useCoachQuestion } from '@/features/coach/api';
 import {
   COACH_THINKING_MESSAGE,
   COACH_TITLE,
   PROFILE_COMPLETE_MESSAGE,
+  RESTART_LABEL,
 } from '@/features/coach/constants';
+import { fallbackCoachQuestion } from '@/features/coach/fallback';
 import {
   BACK_LABEL,
   RELATIONSHIP_TYPE_COPY,
@@ -53,6 +56,7 @@ export function CoachScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const scrollRef = useRef<ScrollView>(null);
+  const queryClient = useQueryClient();
 
   const ageRange = useFiltersStore((state) => state.ageRange);
   const maxDistance = useFiltersStore((state) => state.maxDistance);
@@ -66,6 +70,7 @@ export function CoachScreen() {
   const setRelationshipType = useFiltersStore(
     (state) => state.setRelationshipType,
   );
+  const resetFilters = useFiltersStore((state) => state.reset);
 
   const filters: Filters = {
     ageRange,
@@ -75,9 +80,18 @@ export function CoachScreen() {
   };
   const emptyFields = getEmptyFilterKeys(filters);
   const question = useCoachQuestion(filters);
-  const currentQuestion = question.data;
 
   const [frozenSteps, setFrozenSteps] = useState<FrozenStep[]>([]);
+
+  // « Recommencer » (demo affordance, same spirit as the feed's « Revoir les
+  // profils ») : empty the thread, purge the generated questions, restore the
+  // sentinels — the fresh emptyFields key refetches question 1, never served
+  // from cache.
+  const restart = () => {
+    setFrozenSteps([]);
+    queryClient.removeQueries({ queryKey: coachKeys.all });
+    resetFilters();
+  };
 
   // « Valider » : freeze the step, then commit to the store — emptyFields
   // shrinks, the query key changes and the next question fetches itself.
@@ -108,16 +122,29 @@ export function CoachScreen() {
 
   const renderCurrentStep = () => {
     if (emptyFields.length === 0) {
-      return <CoachBubble text={PROFILE_COMPLETE_MESSAGE} />;
+      return (
+        <>
+          <CoachBubble text={PROFILE_COMPLETE_MESSAGE} />
+          <Pressable
+            accessibilityRole="button"
+            onPress={restart}
+            style={({ pressed }) => [
+              styles.restartButton,
+              pressed && styles.pressed,
+            ]}
+          >
+            <Text style={styles.restartLabel}>{RESTART_LABEL}</Text>
+          </Pressable>
+        </>
+      );
     }
     if (question.isPending) {
       return <CoachBubble pending text={COACH_THINKING_MESSAGE} />;
     }
-    if (currentQuestion === undefined) {
-      // Query error after the retry — the deterministic fallback that keeps
-      // the thread going lands with issue 020.
-      return null;
-    }
+    // Error after the retry (network, HTTP or contract): the thread silently
+    // continues on the deterministic fallback — first empty field in priority
+    // order, static copy. Never an error screen.
+    const currentQuestion = question.data ?? fallbackCoachQuestion(emptyFields);
     return (
       <CoachQuestionStep
         fieldKey={currentQuestion.fieldKey}
@@ -202,5 +229,18 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingTop: 6,
     gap: 12,
+  },
+  restartButton: {
+    alignSelf: 'center',
+    marginTop: 8,
+    backgroundColor: COLORS.primary,
+    borderRadius: 999,
+    paddingHorizontal: 24,
+    paddingVertical: 14,
+  },
+  restartLabel: {
+    color: COLORS.fillOpposite,
+    fontSize: 15,
+    fontWeight: '600',
   },
 });

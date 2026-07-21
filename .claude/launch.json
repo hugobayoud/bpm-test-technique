@@ -12,6 +12,26 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["expo", "start", "--web", "--port", "8082"],
       "port": 8082
+    },
+    {
+      "name": "expo-web-8083",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["expo", "start", "--web", "--port", "8083"],
+      "port": 8083
+    },
+    {
+      "name": "expo-web-8083-coach-down",
+      "runtimeExecutable": "env",
+      "runtimeArgs": [
+        "EXPO_PUBLIC_COACH_URL=http://localhost:9/functions/v1/coach",
+        "npx",
+        "expo",
+        "start",
+        "--web",
+        "--port",
+        "8083"
+      ],
+      "port": 8083
     }
   ]
 }

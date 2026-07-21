@@ -18,7 +18,7 @@ export const coachKeys = {
 // The thread's engine: the key is the list of unanswered Filtres, so
 // validating one changes the key and the next question fetches itself. A
 // generated question never goes stale — regenerating is an explicit
-// removeQueries (« Recommencer », issue 020), not a background refetch.
+// removeQueries (« Recommencer »), not a background refetch.
 export function useCoachQuestion(filters: Filters) {
   const emptyFields = getEmptyFilterKeys(filters);
   return useQuery({

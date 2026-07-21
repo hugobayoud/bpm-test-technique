@@ -1,4 +1,8 @@
-import type { CoachRequest, CoachResponse } from '@/features/coach/types';
+import {
+  type CoachRequest,
+  type CoachResponse,
+  isCoachResponse,
+} from '@/features/coach/types';
 
 // Real network client — unlike the feed's mock, the coach ships with its
 // backend from V1 (ADR 0001): the Supabase Edge Function behind this URL.
@@ -20,6 +24,11 @@ export async function fetchCoachQuestion(
     throw new Error(`Coach HTTP ${response.status}`);
   }
   // The function already re-validates OpenAI's constrained output (tiers 1-2
-  // of the contract); the client-side catalogue guard is issue 020's tier 3.
-  return (await response.json()) as CoachResponse;
+  // of the contract); tier 3 re-checks it here — a response for a field that
+  // is not awaiting a question is an error like any other (→ fallback).
+  const payload: unknown = await response.json();
+  if (!isCoachResponse(payload, request.emptyFields)) {
+    throw new Error('Coach : réponse hors contrat');
+  }
+  return payload;
 }
