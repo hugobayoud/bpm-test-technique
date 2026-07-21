@@ -20,13 +20,16 @@ Recreate the bpm dating-app feed (Expo SDK 57 / RN 0.86, npm, Expo Go only — n
 ```
 src/
   app/            # expo-router routes — thin files only (re-export/compose from features)
-  features/feed/  # the only feature: components/, api.ts, store.ts, constants.ts, fixtures/
+  features/feed/  # components/, api.ts, store.ts, constants.ts, fixtures/
+  features/filters/ # the 4 matching Filtres: catalogue.ts, persisted store.ts, constants.ts
+  features/coach/ # guided Filtres completion via LLM (arrives with issues 019-020)
   components/     # shared composed components; components/ui/ for shared primitives
   lib/            # mock api client, query client
   utils/          # colors.ts, fonts.ts
   types/feed.ts   # provided, untouched
   assets/         # fonts/, logo/
 assets/           # root: app icons referenced by app.json only
+supabase/         # coach edge function (Deno, issue 018)
 ```
 
 ## Conventions
