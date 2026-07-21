@@ -22,9 +22,9 @@ src/
   app/            # expo-router routes — thin files only (re-export/compose from features)
   features/feed/  # components/, api.ts, store.ts, constants.ts, fixtures/
   features/filters/ # the 4 matching Filtres: catalogue.ts, persisted store.ts, constants.ts
-  features/coach/ # guided Filtres completion via LLM (route placeholder now; real screens in 019-020)
+  features/coach/ # guided Filtres completion via LLM: components/, api.ts, my-profile.ts, types.ts (wire contract)
   components/     # shared composed components; components/ui/ for shared primitives
-  lib/            # mock api client, query client
+  lib/            # api clients (feed mock, coach real fetch), query client
   utils/          # colors.ts, fonts.ts
   types/feed.ts   # provided, untouched
   assets/         # fonts/, logo/

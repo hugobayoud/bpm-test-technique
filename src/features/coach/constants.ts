@@ -1,4 +1,6 @@
-// Title of the coach page. Its placeholder route ships with the filters
-// screen (issue 017); the rest of the coach copy arrives with the real
-// screen (issue 019).
+// French copy of the coach thread. The fallback copy (static questions,
+// « Recommencer ») arrives with issue 020.
 export const COACH_TITLE = 'Coach';
+export const COACH_THINKING_MESSAGE = 'Le coach réfléchit…';
+export const VALIDATE_LABEL = 'Valider';
+export const PROFILE_COMPLETE_MESSAGE = 'Ton profil est complet 💪';

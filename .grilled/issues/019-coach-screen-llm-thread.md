@@ -1,6 +1,6 @@
 title: Page Coach — fil guidé branché au vrai LLM
 type: AFK
-status: todo
+status: done
 
 ---
 
