@@ -1,6 +1,6 @@
 title: Écran Filtres — 4 contrôles branchés au store + CTA coach
 type: AFK
-status: todo
+status: done
 
 ---
 

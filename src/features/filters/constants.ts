@@ -12,3 +12,10 @@ export const FILTER_LABELS = {
 
 export const AGE_UNIT = 'ans';
 export const DISTANCE_UNIT = 'km';
+
+// Coach entry point on the filters screen: pushes the /coach route.
+export const COACH_CTA_LABEL = 'Laisse le coach remplir pour toi';
+
+// Accessibility labels of the age slider thumbs (screen readers only).
+export const AGE_MIN_THUMB_LABEL = 'Âge minimum';
+export const AGE_MAX_THUMB_LABEL = 'Âge maximum';
