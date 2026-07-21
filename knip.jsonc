@@ -1,7 +1,9 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   // Provided feed contract, byte-identical and untouched; consumed from issue 004 on.
-  "ignore": ["src/types/feed.ts"],
+  // supabase/: Deno edge function outside the app graph, deployed via the
+  // supabase CLI (issue 018).
+  "ignore": ["src/types/feed.ts", "supabase/**"],
   // feedKeys is exported as the future invalidation seam but is currently
   // only consumed by useFeed in its own file.
   "ignoreExportsUsedInFile": true

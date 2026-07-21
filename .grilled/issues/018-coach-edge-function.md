@@ -1,6 +1,6 @@
 title: Edge Function coach — vrai appel OpenAI en Structured Outputs
 type: HITL
-status: todo
+status: done
 
 ---
 
